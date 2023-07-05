@@ -1,0 +1,42 @@
+version: '3.1'
+
+services:
+  fusemart_postgres:
+    image: "postgres"
+    expose:
+      - 5433
+    ports:
+      - 5433:5433
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: randomizer
+      PGPORT: 5433
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+    restart: always
+    volumes:
+      - fusemart-db-volume:/var/lib/postgresql/data
+
+  randomizer:
+    build:
+      context: ../tools/randomizer
+      dockerfile: ./Dockerfile
+    # image: localhost:5000/randomizer:latest
+    depends_on:
+      - fusemart_postgres
+    environment:
+      PG_USER: admin
+      PG_PASSWORD: password
+      PG_HOST: host.docker.internal
+      PG_PORT: 5433
+      PG_DBNAME: randomizer
+    entrypoint: python
+    command:
+      - main.py
+    restart: always
+
+volumes:
+  fusemart-db-volume:

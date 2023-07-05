@@ -1,0 +1,21 @@
+[flake8]
+ignore =
+    # defaults
+    E121, E123, E126, E133, E226, E241, E242, E704, W503, W504, W505,
+    # blank line contains whitespace
+    W293,
+    # comparison to True should be 'if cond is True:' or 'if cond:'
+    # Disabled because of different behaviour with numpy / pandas
+    E712
+max-line-length = 120
+exclude =
+    # Ignore env files
+    env,
+    venv,
+    .env,
+    .venv
+
+
+# Usage: https://flake8.pycqa.org/en/latest/user/options.html#cmdoption-flake8-per-file-ignores
+per-file-ignores =
+    example__you_cant_see_me.py:E402
